@@ -2,6 +2,9 @@ package com.github.noblecraft.rn;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -13,7 +16,7 @@ import static org.junit.Assert.assertThat;
 public class ConvertorTest {
 
     @Test
-    public void convertToRomanNumerals() {
+    public void straightConvertionsToRomanNumerals() {
         assertThat(Convertor.toRomanNumerals(1), is("I"));
         assertThat(Convertor.toRomanNumerals(5), is("V"));
         assertThat(Convertor.toRomanNumerals(10), is("X"));
@@ -21,6 +24,15 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(100), is("C"));
         assertThat(Convertor.toRomanNumerals(500), is("D"));
         assertThat(Convertor.toRomanNumerals(1000), is("M"));
+    }
+
+    @Test
+    public void convertNumbersTo10ThatRequireRepetition() {
+        assertThat(Convertor.toRomanNumerals(2), is("II"));
+        assertThat(Convertor.toRomanNumerals(3), is("III"));
+        assertThat(Convertor.toRomanNumerals(6), is("VI"));
+        assertThat(Convertor.toRomanNumerals(7), is("VII"));
+        assertThat(Convertor.toRomanNumerals(8), is("VIII"));
     }
 
 }
