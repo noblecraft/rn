@@ -35,4 +35,10 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(8), is("VIII"));
     }
 
+    @Test
+    public void convertNumbersTo10ThatRequireSubtraction() {
+        assertThat(Convertor.toRomanNumerals(4), is("IV"));
+        assertThat(Convertor.toRomanNumerals(9), is("IX"));
+    }
+
 }

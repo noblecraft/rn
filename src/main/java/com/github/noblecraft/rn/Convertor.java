@@ -1,5 +1,7 @@
 package com.github.noblecraft.rn;
 
+import com.google.common.base.Optional;
+
 /**
  * User: dzhu
  * Date: 8/09/12
@@ -21,13 +23,26 @@ public final class Convertor {
 
         final StringBuilder out = new StringBuilder();
 
-        final RomanNumeral base = findBase(number);
+        final Bounds<RomanNumeral> bounds = bounds(number);
 
-        out.append(base.getSymbol());
-
-        repeat(base, number, out);
+        if (requiresSubtracting(number, bounds)) {
+            out.append("I").append(bounds.getUpper().get().getSymbol());
+        } else {
+            out.append(bounds.getLower().get().getSymbol());
+            repeat(bounds.getLower().get(), number, out);
+        }
 
         return out.toString();
+
+    }
+
+    private static boolean requiresSubtracting(int number, Bounds<RomanNumeral> bounds) {
+
+        if (bounds.getLower().get().getSymbol().equals("I")) {
+            return number - bounds.getLower().get().getNumber() > 2;
+        }
+
+        return number - bounds.getLower().get().getNumber() > 3;
 
     }
 
@@ -37,15 +52,45 @@ public final class Convertor {
         }
     }
 
-    private static RomanNumeral findBase(Integer max) {
+    private static Bounds<RomanNumeral> bounds(Integer number) {
 
         for (int i = 0; i < ROMAN_NUMERALS.length - 1; i++) {
-            if (ROMAN_NUMERALS[i + 1].getNumber() > max) {
-                return ROMAN_NUMERALS[i];
+            if (ROMAN_NUMERALS[i].getNumber() == number) {
+                return Bounds.bounded(ROMAN_NUMERALS[i], ROMAN_NUMERALS[i]);
+            } else if (ROMAN_NUMERALS[i + 1].getNumber() > number) {
+                return Bounds.bounded(ROMAN_NUMERALS[i], ROMAN_NUMERALS[i + 1]);
             }
         }
 
-        return ROMAN_NUMERALS[ROMAN_NUMERALS.length - 1];
+        return Bounds.noUpperBound(ROMAN_NUMERALS[ROMAN_NUMERALS.length - 1]);
+
+    }
+
+    private static class Bounds<T> {
+
+        private final Optional<T> lower;
+        private final Optional<T> upper;
+
+        public Bounds(Optional<T> lower, Optional<T> upper) {
+            this.lower = lower;
+            this.upper = upper;
+        }
+
+        public Optional<T> getLower() {
+            return lower;
+        }
+
+        public Optional<T> getUpper() {
+            return upper;
+        }
+
+        public static <T>Bounds<T> bounded(T lower, T upper) {
+            return new Bounds<T>(Optional.of(lower), Optional.of(upper));
+        }
+
+        public static <T>Bounds<T> noUpperBound(T lower) {
+            return new Bounds<T>(Optional.of(lower), Optional.<T>absent());
+        }
 
     }
 
