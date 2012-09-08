@@ -8,6 +8,6 @@ package com.github.noblecraft.rn;
 public final class Convertor {
 
     public static String toRomanNumerals(int number) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return "I";
     }
 }
