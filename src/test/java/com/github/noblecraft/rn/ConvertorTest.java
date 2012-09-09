@@ -66,4 +66,36 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(99), is("XCIX"));
     }
 
+    @Test
+    public void convertNumbersGreaterThan100LessThan1000() {
+        assertThat(Convertor.toRomanNumerals(101), is("CI"));
+        assertThat(Convertor.toRomanNumerals(109), is("CIX"));
+        assertThat(Convertor.toRomanNumerals(110), is("CX"));
+        assertThat(Convertor.toRomanNumerals(111), is("CXI"));
+        assertThat(Convertor.toRomanNumerals(200), is("CC"));
+        assertThat(Convertor.toRomanNumerals(300), is("CCC"));
+        assertThat(Convertor.toRomanNumerals(400), is("CD"));
+        assertThat(Convertor.toRomanNumerals(499), is("CDXCIX"));
+        assertThat(Convertor.toRomanNumerals(510), is("DX"));
+        assertThat(Convertor.toRomanNumerals(900), is("CM"));
+        assertThat(Convertor.toRomanNumerals(990), is("CMXC"));
+        assertThat(Convertor.toRomanNumerals(999), is("CMXCIX"));
+    }
+
+    @Test
+    public void convertNumbersGreaterThan1000LessThan3000() {
+        assertThat(Convertor.toRomanNumerals(1001), is("MI"));
+        assertThat(Convertor.toRomanNumerals(1010), is("MX"));
+        assertThat(Convertor.toRomanNumerals(1099), is("MXCIX"));
+        assertThat(Convertor.toRomanNumerals(1100), is("MC"));
+        assertThat(Convertor.toRomanNumerals(1200), is("MCC"));
+        assertThat(Convertor.toRomanNumerals(1300), is("MCCC"));
+        assertThat(Convertor.toRomanNumerals(1400), is("MCD"));
+        assertThat(Convertor.toRomanNumerals(1500), is("MD"));
+        assertThat(Convertor.toRomanNumerals(2000), is("MM"));
+        assertThat(Convertor.toRomanNumerals(2100), is("MMC"));
+        assertThat(Convertor.toRomanNumerals(2400), is("MMCD"));
+        assertThat(Convertor.toRomanNumerals(2999), is("MMCMXCIX"));
+    }
+
 }
