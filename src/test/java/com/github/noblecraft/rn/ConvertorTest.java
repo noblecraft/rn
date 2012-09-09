@@ -41,4 +41,29 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(9), is("IX"));
     }
 
+    @Test
+    public void convertNumbersGreaterThan10LessThan100() {
+        assertThat(Convertor.toRomanNumerals(11), is("XI"));
+        assertThat(Convertor.toRomanNumerals(12), is("XII"));
+        assertThat(Convertor.toRomanNumerals(13), is("XIII"));
+        assertThat(Convertor.toRomanNumerals(14), is("XIV"));
+        assertThat(Convertor.toRomanNumerals(15), is("XV"));
+        assertThat(Convertor.toRomanNumerals(16), is("XVI"));
+        assertThat(Convertor.toRomanNumerals(17), is("XVII"));
+        assertThat(Convertor.toRomanNumerals(18), is("XVIII"));
+        assertThat(Convertor.toRomanNumerals(19), is("XIX"));
+        assertThat(Convertor.toRomanNumerals(20), is("XX"));
+        assertThat(Convertor.toRomanNumerals(21), is("XXI"));
+        assertThat(Convertor.toRomanNumerals(30), is("XXX"));
+        assertThat(Convertor.toRomanNumerals(39), is("XXXIX"));
+        assertThat(Convertor.toRomanNumerals(40), is("XL"));
+        assertThat(Convertor.toRomanNumerals(55), is("LV"));
+        assertThat(Convertor.toRomanNumerals(93), is("XCIII"));
+        assertThat(Convertor.toRomanNumerals(94), is("XCIV"));
+        assertThat(Convertor.toRomanNumerals(96), is("XCVI"));
+        assertThat(Convertor.toRomanNumerals(97), is("XCVII"));
+        assertThat(Convertor.toRomanNumerals(98), is("XCVIII"));
+        assertThat(Convertor.toRomanNumerals(99), is("XCIX"));
+    }
+
 }

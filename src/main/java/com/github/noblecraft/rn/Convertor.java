@@ -19,36 +19,60 @@ public final class Convertor {
         new RomanNumeral("M", 1000) // 6
     };
 
-    public static String toRomanNumerals(int number) {
+    public static String toRomanNumerals(Integer number) {
+
+        final Integer[] numbers = NumberUtils.split(number);
 
         final StringBuilder out = new StringBuilder();
 
-        final Bounds<RomanNumeral> bounds = bounds(number);
-
-        if (requiresSubtracting(number, bounds)) {
-            out.append("I").append(bounds.getUpper().get().getSymbol());
-        } else {
-            out.append(bounds.getLower().get().getSymbol());
-            repeat(bounds.getLower().get(), number, out);
+        for (int i = 0; i < numbers.length; i++) {
+            out.append(convert(numbers[i], ROMAN_NUMERALS[indexOfRepeatNumeral(numbers.length, i)]));
         }
 
         return out.toString();
 
     }
 
-    private static boolean requiresSubtracting(int number, Bounds<RomanNumeral> bounds) {
+    private static int indexOfRepeatNumeral(int totalDigits, int position) {
+        return 2 * (totalDigits - position - 1);
+    }
 
-        if (bounds.getLower().get().getSymbol().equals("I")) {
-            return number - bounds.getLower().get().getNumber() > 2;
+    private static String convert(Integer number, RomanNumeral repeatNumeral) {
+
+        if (number == 0) {
+            return "";
         }
 
-        return number - bounds.getLower().get().getNumber() > 3;
+        final StringBuilder out = new StringBuilder();
+
+        final Bounds<RomanNumeral> bounds = bounds(number);
+
+        if (requiresSubtracting(number, bounds, repeatNumeral)) {
+            out.append(repeatNumeral.getSymbol()).append(bounds.getUpper().get().getSymbol());
+        } else {
+            out.append(bounds.getLower().get().getSymbol());
+            repeat(number, bounds.getLower().get(), repeatNumeral, out);
+        }
+
+        return out.toString();
+    }
+
+
+    private static boolean requiresSubtracting(int number, Bounds<RomanNumeral> bounds, RomanNumeral repeatNumeral) {
+
+        final int repeats = (number - bounds.getLower().get().getNumber()) / repeatNumeral.getNumber();
+
+        if (bounds.getLower().get().getSymbol().equals(repeatNumeral.getSymbol())) {
+            return repeats > 2;
+        }
+
+        return repeats > 3;
 
     }
 
-    private static void repeat(RomanNumeral base, int number, StringBuilder builder) {
-        for (int i = 0; i < number - base.getNumber(); i++) {
-            builder.append(ROMAN_NUMERALS[0].getSymbol());
+    private static void repeat(Integer number, RomanNumeral anchor, RomanNumeral repeatNumeral, StringBuilder builder) {
+        for (int i = 0; i < number - anchor.getNumber(); i += repeatNumeral.getNumber()) {
+            builder.append(repeatNumeral.getSymbol());
         }
     }
 
