@@ -98,4 +98,14 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(2999), is("MMCMXCIX"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegaArgumentExceptionIfZero() {
+        Convertor.toRomanNumerals(0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowIllegaArgumentExceptionIfGreaterThan3000() {
+        Convertor.toRomanNumerals(3001);
+    }
+
 }

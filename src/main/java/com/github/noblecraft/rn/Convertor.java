@@ -9,6 +9,8 @@ import com.google.common.base.Optional;
  */
 public final class Convertor {
 
+    private static final int MAX_NUMBER = 3000;
+
     private static final RomanNumeral[] ROMAN_NUMERALS = new RomanNumeral[] {
         new RomanNumeral("I", 1), // 0
         new RomanNumeral("V", 5), // 1
@@ -21,6 +23,8 @@ public final class Convertor {
 
     public static String toRomanNumerals(Integer number) {
 
+        validate(number);
+
         final Integer[] numbers = NumberUtils.split(number);
 
         final StringBuilder out = new StringBuilder();
@@ -31,6 +35,16 @@ public final class Convertor {
 
         return out.toString();
 
+    }
+
+    private static void validate(Integer number) {
+        if (number <= 0) {
+            throw new IllegalArgumentException("Number needs to be > 0");
+        }
+
+        if (number > MAX_NUMBER) {
+            throw new IllegalArgumentException("Number can not be greater than " + MAX_NUMBER);
+        }
     }
 
     private static int indexOfRepeatNumeral(int totalDigits, int position) {
