@@ -2,9 +2,6 @@ package com.github.noblecraft.rn;
 
 import org.junit.Test;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -14,6 +11,12 @@ import static org.junit.Assert.assertThat;
  * Time: 12:37 PM
  */
 public class ConvertorTest {
+
+    // The rules were too complicated to think about all at once
+    // see: http://en.wikipedia.org/wiki/Roman_numerals#Reading_Roman_numerals
+    // So the approach I took was to attempt it by going from:
+
+    // 1. Straight conversion (where a number can be directly mapped to the roman numeral).
 
     @Test
     public void straightConvertionsToRomanNumerals() {
@@ -26,6 +29,8 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(1000), is("M"));
     }
 
+    // 2. Implement repetition logic (without considering the 'no more than 3 repetitions' rule), but only for numbers less than 10
+
     @Test
     public void convertNumbersTo10ThatRequireRepetition() {
         assertThat(Convertor.toRomanNumerals(2), is("II"));
@@ -35,12 +40,16 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(8), is("VIII"));
     }
 
+    // 3. Implement subtraction (taking the 'no more than 3 repitions' rule into account), but only for numbers less than 10
+
     @Test
     public void convertNumbersTo10ThatRequireSubtraction() {
         assertThat(Convertor.toRomanNumerals(4), is("IV"));
         assertThat(Convertor.toRomanNumerals(9), is("IX"));
     }
 
+    // 4. consider numbers greater than 10, i.e. implement breaking down of the number (e.g. '11' gets broken down
+    //    into [10, 1]; 1234 gets broken down into [1000, 200, 30, 4])
     @Test
     public void convertNumbersGreaterThan10LessThan100() {
         assertThat(Convertor.toRomanNumerals(11), is("XI"));
@@ -66,6 +75,8 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(99), is("XCIX"));
     }
 
+    // 5. numbers greater than 100, at this stage, only validating tests needed to be added, as the implementation
+    //    is already robust enough...
     @Test
     public void convertNumbersGreaterThan100LessThan1000() {
         assertThat(Convertor.toRomanNumerals(101), is("CI"));
@@ -83,7 +94,7 @@ public class ConvertorTest {
     }
 
     @Test
-    public void convertNumbersGreaterThan1000LessThan3000() {
+    public void convertNumbersGreaterThan1000To3000() {
         assertThat(Convertor.toRomanNumerals(1001), is("MI"));
         assertThat(Convertor.toRomanNumerals(1010), is("MX"));
         assertThat(Convertor.toRomanNumerals(1099), is("MXCIX"));
@@ -96,7 +107,11 @@ public class ConvertorTest {
         assertThat(Convertor.toRomanNumerals(2100), is("MMC"));
         assertThat(Convertor.toRomanNumerals(2400), is("MMCD"));
         assertThat(Convertor.toRomanNumerals(2999), is("MMCMXCIX"));
+        assertThat(Convertor.toRomanNumerals(3000), is("MMM"));
     }
+
+    // lastly, test the number validation - I had specific requirement by the employer to only
+    // be able to convert from numbers from 1 to 3000
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegaArgumentExceptionIfZero() {
